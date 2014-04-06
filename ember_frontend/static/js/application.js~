@@ -1,0 +1,7 @@
+window.Blog = Ember.Application.create();
+
+Blog.ApplicationAdapter = DS.DjangoRESTAdapter.extend({
+  namespace: 'api'
+});
+
+Blog.store = Blog.__container__.lookup('store:main')

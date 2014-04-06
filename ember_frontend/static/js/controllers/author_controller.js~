@@ -1,0 +1,3 @@
+Blog.AuthorController = Ember.ObjectController.extend({
+
+})

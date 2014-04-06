@@ -1,0 +1,278 @@
+<!doctype html>
+<html>
+<head>
+    <title>Byatt's Djember Blog</title>
+    <style>
+      body, html {
+        background-color: black;
+        margin: 0px;
+        padding: 0px;
+        height: 100%
+      }
+    
+      div {
+        display: block;
+        margin: none;
+      }
+     
+      div.ember-view {
+        height: 100%;
+        min-height: 100%;
+      }
+     
+      div.container {
+        width: 600px;
+        min-height: 100%;
+        top: 0px;
+        background-color: white;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 0px;
+        margin-bottom: 0px;
+        padding: 10px;
+      }
+     
+      div.post {
+        background-color: white;
+        border: 1px dashed grey;
+        margin: 6px;
+        margin-left: auto;
+        margin-right: auto;
+        padding: 6px;
+        width: 500px;
+      }
+      
+      div.title {
+        font-size: 18pt;
+
+      }
+      
+      h1 {
+        text-align: center;
+      }
+      
+      h1 a {
+        color: black;
+      }
+      
+      h2 {
+        text-align: center;
+      }
+      
+      a {
+        text-decoration: none;
+        color: #888888;
+      }
+      
+      a.text_link:hover {
+        border-bottom: 1px dashed black;
+      }
+      
+      div.controls {
+        position: fixed;
+        text-align: right;
+        top: 30%;
+        background-color: white;
+        border: 16px solid rgba(0,0,0, 0.3);
+        border-radius: 32px;
+        border-left: none;
+        padding: 8px;
+      }
+
+      input {
+        width: 92%;
+        padding-left: 4%;
+        padding-right: 4%;
+        padding-top: 8px;
+        padding-bottom: 8px;
+        border: 1px solid black;
+      }
+      
+      textarea {
+        width: 92%;
+        height: 400px;
+        padding-left: 4%;
+        padding-right: 4%;
+        padding-top: 8px;
+        padding-bottom: 8px;
+        border: 1px solid black;
+      }
+     
+      select {
+        width: 40%;
+        padding-left: 4%;
+        padding-top: 8px;
+        padding-bottom: 8px;
+        border: 1px solid black;
+      }
+
+    </style>
+    <meta charset="utf-8"/>
+    {% load staticfiles %}
+    <script src="{% static 'js/lib/jquery-1.10.2.min.js' %}"></script>
+    <script src="{% static 'js/lib/handlebars-1.0.0.js' %}" type="text/javascript"></script>
+    <script src="{% static 'js/lib/ember.js' %}" type="text/javascript"></script>
+    <script src="{% static 'js/lib/ember-data.js' %}" type="text/javascript"></script>
+    <script src="{% static 'js/lib/ember-data-django-rest-adapter.js' %}" type="text/javascript"></script>
+    <script src="{% static 'js/lib/moment.min.js' %}" type="text/javascript"></script>
+
+    <script src="{% static 'js/application.js' %}" type="text/javascript"></script>
+
+    <script src="{% static 'js/helpers/current_user_helper.js' %}" type="text/javascript"></script>
+    
+    <script src="{% static 'js/router.js' %}" type="text/javascript"></script>
+    
+    <script src="{% static 'js/models/post.js' %}" type="text/javascript"></script>
+    <script src="{% static 'js/models/user.js' %}" type="text/javascript"></script>
+
+    <script src="{% static 'js/controllers/application_controller.js' %}" type="text/javascript"></script>    
+    <script src="{% static 'js/controllers/post_controller.js' %}" type="text/javascript"></script>    
+    <script src="{% static 'js/controllers/session_controller.js' %}" type="text/javascript"></script>    
+    
+    <script type="text/javascript">
+      jQuery(document).ajaxSend(function(event, xhr, settings) {
+        if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+          xhr.setRequestHeader("X-CSRFToken", "{{csrf_token}}");
+        }
+      });
+    </script>
+</head>
+<body>
+
+  {% verbatim %}
+    <script type="text/x-handlebars" data-template-name="user_controls">
+      <div class="user_controls controls">
+        <style>
+          div.user_controls {
+            width: 100px;
+            left: -32px;
+          }
+          
+          div.user_controls div {
+            display: block;
+          }
+        </style>
+        <div class="logout"><img src="/static/images/logout.png" {{action 'logout'}} title="Log out"/></div>
+        <div class="create">{{#link-to "posts.new"}}<img src="/static/images/create.png" title="Create new post" />{{/link-to}}
+        <div class="my_posts">{{#link-to "user" model}}<img src="/static/images/list.png" title="View your posts"/>{{/link-to}}</div>
+      </div>
+    </script>
+  
+    <script type="text/x-handlebars" data-template-name="guest_controls">
+      <div class="guest_controls controls">
+        <style>
+          div.guest_controls {
+            border: 1px solid grey;
+            border-radius: 0px;
+          }
+        
+          div.guest_controls input {
+            width: 180px;
+            border: 1px solid black;
+            padding: 6px;
+            margin: 4px;
+          }
+          
+          div.guest_controls input.submit {
+            width: 90px;
+            border: 1px solid black;
+            padding: 6px;
+            margin: 4px;
+          }
+        </style>
+      <form {{action login on="submit"}}>
+        <div class="form-group">
+          {{input class="username" value=username type="text" placeholder="Username"}}
+        </div>
+        <div class="form-group">
+          {{input class="password" value=password type="password" placeholder="Password"}}
+        </div>
+        {{input class="submit btn" type="submit" value="Login"}}
+      </form>
+      {{#if errorMessage}}
+        <span class="text-danger">{{errorMessage}}</span>
+      {{/if}}
+      
+      </div>
+    </script>
+  
+    <script type="text/x-handlebars" id="session">
+      {{#if isAuthenticated}}
+        {{partial 'user_controls'}}
+      {{else}}
+        {{partial 'guest_controls'}}
+      {{/if}}    
+    </script>
+  
+    <script type="text/x-handlebars">
+      {{ render 'session' }}
+      
+      <div class="container">
+      <h1>{{#link-to 'index' class="text_link"}}Byatt's Djember Blog{{/link-to}}</h1>      
+        {{outlet}}
+      </div>
+    </script>
+   
+    <!-- POSTS -->
+    
+    <script type="text/x-handlebars" data-template-name="posts">
+      {{outlet}}
+      {{#each}}
+        {{partial 'post'}}
+      {{/each}}
+    </script>
+    
+    <script type="text/x-handlebars" data-template-name="post">
+      <div class="post">
+        <div class="title">
+          {{#link-to 'post' this class="text_link"}}{{title}}{{/link-to}}
+          {{#if belongsToCurrentUser}}
+            {{#link-to 'post.edit' model}}<img src="/static/images/edit.png" title="Edit post" height="18px"/>{{/link-to}}
+          {{/if}}
+        </div>
+        <div class="byline">{{#link-to 'user' user class="text_link"}}{{user.fullName}}{{/link-to}} - {{displayPublishedDate}}</div>
+        <div class="body">{{body}}</div>
+      </div>
+    </script>
+    
+     <script type="text/x-handlebars" data-template-name="posts/new">
+      <div class="post">
+        <style>
+          div.post div.create-submit {
+            text-align: center;
+          }
+        </style>
+        <form {{action save on="submit"}}>
+           <div class="create-visibility">
+            {{view Ember.Select content=visibility_options
+                                optionValuePath='content.code'
+                                optionLabelPath='content.label'
+                                value=visibility}}
+                                
+          </div>
+
+          <div class="create-title">
+            {{input value=title placeholder="Title"}}
+          </div>
+          <div class="create-body">
+            {{textarea value=body placeholder="Post content"}}
+          </div>
+          <div class="create-submit">
+            <input type="submit" value="save post">
+          </div>
+        </form>
+      </div>
+    </script>
+    
+    <script type="text/x-handlebars" data-template-name="user">
+      <h2>{{fullName}}</h2>
+      <div class="posts">
+        {{#each posts}}
+          {{partial 'post'}}
+        {{/each}}
+      </div>
+    </script>
+  {% endverbatim %}
+  
+</body>
+</html>

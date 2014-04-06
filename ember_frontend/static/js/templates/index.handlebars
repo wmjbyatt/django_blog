@@ -1,0 +1,11 @@
+<div class="index">
+  {{#each post in controller}}
+    <div class="post">
+      <div class="title">{{post.title}}</div>
+      <div class="author">{{post.author}}</div>
+      <div class="publication_date">{{post.publication_date}</div>
+      <div class="post_body">{{post.body}}</div>
+    </div>
+  {{/each}}
+</div>
+

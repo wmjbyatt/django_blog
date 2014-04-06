@@ -1,0 +1,21 @@
+Blog.ApplicationController = Ember.Controller.extend({
+
+});
+
+Blog.CurrentUserHelper = {
+  beforeModel: function() {
+    if (!this.controllerFor('application').get('currentUser')) {
+      var auth_deferred = $.get(Blog.Host + '/api/session');
+      
+      auth_deferred.then(function(user) {
+        this.controllerFor('application').set('currentUser', user);
+      }.bind(this));
+      
+      return auth_deferred;
+    }
+  },
+  
+  currentUser: function() {
+    return this.controllerFor('application').get('currentUser');
+  }.property()
+};

@@ -18,6 +18,7 @@ class UsersView(generics.ListCreateAPIView):
 class UserView(generics.RetrieveUpdateDestroyAPIView):
   model = User
   serializer_class = UserSerializer
+
   
 class PostsView(generics.ListCreateAPIView):
   model = Post

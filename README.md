@@ -6,3 +6,7 @@ Dependencies:
 * Ember Django REST Framework Adapter
 * Moment.js (included in repo)
 * Ember.js (included in repo)
+
+Users:
+wmjbyatt:password
+odin:asgard4ever

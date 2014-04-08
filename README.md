@@ -9,7 +9,6 @@ Dependencies:
 
 ISSUES:
 * User can still see non-public posts immediately after logout
-* Logout control style broken immediately after logout
 
 Users:
 *wmjbyatt:password

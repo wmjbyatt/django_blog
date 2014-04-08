@@ -72,3 +72,32 @@ div.controls {
     border-left: none;
     padding: 8px;
 }
+
+ div.user_controls {
+    width: 100px;
+    left: -32px;
+}
+
+div.user_controls div {
+    display: block;
+}
+
+div.guest_controls {
+    border: 1px solid grey;
+    border-radius: 0px;
+    left: 0px;
+}
+
+div.guest_controls input {
+    width: 180px;
+    border: 1px solid black;
+    padding: 6px;
+    margin: 4px;
+}
+
+div.guest_controls input.submit {
+    width: 90px;
+    border: 1px solid black;
+    padding: 6px;
+    margin: 4px;
+}

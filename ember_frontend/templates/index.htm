@@ -47,7 +47,7 @@
 <script type="text/x-handlebars">
         {{ render session }}
             <div class="container">
-            <h1>Byatt's Djember Blog</h1>
+            <h1>{{#link-to 'index' class="text_link"}}Byatt's Djember Blog{{/link-to}}</h1>
             {{ outlet }}
         </div>
 
@@ -55,16 +55,6 @@
 
 <script type="text/x-handlebars" data-template-name="user_controls">
       <div class="user_controls controls">
-        <style>
-          div.user_controls {
-            width: 100px;
-            left: -32px;
-          }
-
-          div.user_controls div {
-            display: block;
-          }
-        </style>
         <div class="logout"><img src="/static/images/logout.png" {{action 'logout'}} title="Log out"/></div>
         <div class="create">{{#link-to "posts.new"}}<img src="/static/images/create.png" title="Create new post" />{{/link-to}}
         <div class="my_posts">{{#link-to "user" model}}<img src="/static/images/list.png" title="View your posts"/>{{/link-to}}</div>
@@ -74,26 +64,6 @@
 
 <script type="text/x-handlebars" data-template-name="guest_controls">
       <div class="guest_controls controls">
-        <style>
-          div.guest_controls {
-            border: 1px solid grey;
-            border-radius: 0px;
-          }
-        
-          div.guest_controls input {
-            width: 180px;
-            border: 1px solid black;
-            padding: 6px;
-            margin: 4px;
-          }
-          
-          div.guest_controls input.submit {
-            width: 90px;
-            border: 1px solid black;
-            padding: 6px;
-            margin: 4px;
-          }
-        </style>
       <form {{action login on="submit"}}>
         <div class="form-group">
           {{input class="username" value=username type="text" placeholder="Username"}}

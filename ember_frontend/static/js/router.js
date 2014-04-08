@@ -24,23 +24,6 @@ Blog.IndexRoute = Ember.Route.extend({
   }
 });
 
-
-Blog.UserRoute = Ember.Route.extend({
-  afterModel: function(model) {
-    // Nested route lookups weren't loading the associations before the template rendered,
-    // so we use direct filtered querying to load the associations.
-    var store = this.get('store'),
-        userId = model.get('id');
-    
-    var promises = [
-      store.find('post', {user_id: userId})
-    ]
-    
-    return Ember.RSVP.all(promises);
-  }
-});
-
-
 Blog.PostsRoute = Ember.Route.extend(Blog.CurrentUserHelper,{
   model: function() {
     return this.store.find('post');

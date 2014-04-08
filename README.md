@@ -8,7 +8,7 @@ Dependencies:
 * Ember.js (included in repo)
 
 ISSUES:
-* User can still see non-public posts immediately after logout
+* Visible posts don't change until actual page refresh. This almost definitely is a result of misunderstanding how ember-data caches models.
 
 Users:
 *wmjbyatt:password

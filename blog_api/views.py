@@ -11,42 +11,57 @@ from django.db.models import Q
 
 from blog_api.serializers import UserSerializer, PostSerializer
 
-class UsersView(generics.ListCreateAPIView):
-  model = User
-  serializer_class = UserSerializer
-  
-class UserView(generics.RetrieveUpdateDestroyAPIView):
-  model = User
-  serializer_class = UserSerializer
 
-  
+class UsersView(generics.ListCreateAPIView):
+    model = User
+    serializer_class = UserSerializer
+
+
+class UserView(generics.RetrieveUpdateDestroyAPIView):
+    model = User
+    serializer_class = UserSerializer
+
+
 class PostsView(generics.ListCreateAPIView):
-  model = Post
-  serializer_class = PostSerializer
-  
-  def get_queryset(self):
-    user = self.request.user
-  
-    if isinstance(user, AnonymousUser):
-      return Post.objects.filter(visibility='PU')
-    else:
-      return Post.objects.filter(Q(visibility='PU') | Q(user=user))
+    serializer_class = PostSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+
+        if isinstance(user, AnonymousUser):
+            return Post.objects.filter(visibility='PU')
+        else:
+            return Post.objects.filter(Q(visibility='PU') | Q(user=user))
+
+
+class PostsByUserView(generics.ListCreateAPIView):
+    serializer_class = PostSerializer
+
+    def get_queryset(self):
+        userid = self.kwargs.get('user_pk')
+        posts = Post.objects.filter(user=userid)
+
+        if userid == str(self.request.user.id):
+            return posts
+
+        return posts.filter(visibility = 'PU')
+
 
 class PostView(generics.RetrieveUpdateDestroyAPIView):
-  model = Post
-  serializer_class = PostSerializer
-  
-  def get_queryset(self):
-    user = self.request.user
-  
-    if isinstance(user, AnonymousUser):
-      return Post.objects.filter(visibility='PU')
-    else:
-      return Post.objects.filter(Q(visibility='PU') | Q(user=user))
+    serializer_class = PostSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+
+        if isinstance(user, AnonymousUser):
+            return Post.objects.filter(visibility='PU')
+        else:
+            return Post.objects.filter(Q(visibility='PU') | Q(user=user))
+
 
 class SessionView(APIView):
     permission_classes = (permissions.AllowAny,)
-  
+
     error_messages = {
         'invalid': "Invalid username or password",
         'disabled': "Sorry, this account is suspended",

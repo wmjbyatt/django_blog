@@ -38,6 +38,7 @@
         }
       });
 
+
     </script>
 </head>
 <body>
@@ -51,6 +52,7 @@
             {{ outlet }}
         </div>
 
+
 </script>
 
 <script type="text/x-handlebars" data-template-name="user_controls">
@@ -59,6 +61,7 @@
         <div class="create">{{#link-to "posts.new"}}<img src="/static/images/create.png" title="Create new post" />{{/link-to}}
         <div class="my_posts">{{#link-to "user" model}}<img src="/static/images/list.png" title="View your posts"/>{{/link-to}}</div>
       </div>
+
 
 </script>
 
@@ -79,6 +82,7 @@
       
       </div>
 
+
 </script>
 
 <script type="text/x-handlebars" id="session">
@@ -88,16 +92,19 @@
         {{partial 'guest_controls'}}
       {{/if}}    
 
+
 </script>
 
 
 <!-- POSTS -->
-
 <script type="text/x-handlebars" data-template-name="posts">
-      {{outlet}}
-      {{#each}}
-        {{partial 'post'}}
-      {{/each}}
+    {{outlet}}
+
+    {{#each}}
+        {{#if hasVisibility }}
+            {{partial 'post'}}
+        {{/if}}
+    {{/each}}
 
 </script>
 
@@ -112,6 +119,7 @@
         <div class="byline">{{#link-to 'user' user class="text_link"}}{{user.fullName}}{{/link-to}} - {{displayPublishedDate}}</div>
         <div class="body">{{body}}</div>
       </div>
+
 
 </script>
 
@@ -170,15 +178,19 @@
         </form>
       </div>
 
+
 </script>
 
 <script type="text/x-handlebars" data-template-name="user">
       <h2>{{fullName}}</h2>
       <div class="posts">
         {{#each content.posts}}
-          {{partial 'post'}}
+          {{#if hasVisibility }}
+            {{partial 'post'}}
+          {{/if}}
         {{/each}}
       </div>
+
 
 </script>
 {% endverbatim %}

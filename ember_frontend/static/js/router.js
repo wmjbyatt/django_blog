@@ -52,7 +52,12 @@ Blog.PostsNewRoute = Ember.Route.extend({
     return this.store.createRecord('post');
   },
   
-    
+  renderTemplate: function() {
+    this.render('posts.new', {
+      into: 'application',
+      controller: 'postNew'
+    });
+  }
 });
 
 Blog.PostEditRoute = Ember.Route.extend({

@@ -7,6 +7,11 @@ Dependencies:
 * Moment.js (included in repo)
 * Ember.js (included in repo)
 
+ISSUES:
+* User can still see non-public posts immediately after logout
+* Logout control style broken immediately after logout
+* Redirects to post/null after new post
+
 Users:
-wmjbyatt:password
-odin:asgard4ever
+*wmjbyatt:password
+*odin:asgard4ever

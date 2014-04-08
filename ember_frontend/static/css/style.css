@@ -1,0 +1,74 @@
+body, html {
+    background-color: black;
+    margin: 0px;
+    padding: 0px;
+    height: 100%
+}
+
+div {
+    display: block;
+    margin: none;
+}
+
+    div.ember-view {
+    height: 100%;
+    min-height: 100%;
+}
+
+div.container {
+    width: 600px;
+    min-height: 100%;
+    top: 0px;
+    background-color: white;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding: 10px;
+}
+
+div.post {
+    background-color: white;
+    border: 1px dashed grey;
+    margin: 6px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 6px;
+    width: 500px;
+}
+
+div.title {
+    font-size: 18pt;
+}
+
+h1 {
+    text-align: center;
+}
+
+h1 a {
+    color: black;
+}
+
+h2 {
+    text-align: center;
+}
+
+a {
+    text-decoration: none;
+    color: #888888;
+}
+
+a.text_link:hover {
+    border-bottom: 1px dashed black;
+}
+
+div.controls {
+    position: fixed;
+    text-align: right;
+    top: 30%;
+    background-color: white;
+    border: 16px solid rgba(0,0,0, 0.3);
+    border-radius: 32px;
+    border-left: none;
+    padding: 8px;
+}

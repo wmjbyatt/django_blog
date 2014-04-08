@@ -31,14 +31,16 @@ Blog.PostController = Ember.ObjectController.extend({
 Blog.PostsNewController = Blog.PostEditableController.extend({
   actions: {
     save: function() {
+      var self = this;
+
       current_user = this.store.find('user', Blog.get('currentUser'));
       var post = this.get('model');
       post.set('publishedDate', moment().format('YYYY-MM-DD HH:mm:ss'));
       post.set('user', Blog.CurrentUser);
 
-      post.save();
-      
-      this.transitionToRoute('post', post);
+      post.save().then(function(saved_post) {
+        self.transitionToRoute('post', saved_post);
+      });
     }
   }
 });

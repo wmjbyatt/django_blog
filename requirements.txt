@@ -1,2 +1,1 @@
-django_blog
-django-rest-framework==2.3.13
+djangorestframework==2.3.13

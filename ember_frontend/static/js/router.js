@@ -38,7 +38,7 @@ Blog.PostsNewRoute = Ember.Route.extend({
   renderTemplate: function() {
     this.render('posts.new', {
       into: 'application',
-      controller: 'postNew'
+      controller: 'postsNew'
     });
   }
 });

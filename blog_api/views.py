@@ -10,7 +10,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.db.models import Q
 
 from blog_api.serializers import UserSerializer, PostSerializer
-
+from blog_api.mixins import PostAuthenticationMixin
 
 class UsersView(generics.ListCreateAPIView):
     model = User
@@ -22,17 +22,8 @@ class UserView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = UserSerializer
 
 
-class PostsView(generics.ListCreateAPIView):
+class PostsView(PostAuthenticationMixin, generics.ListCreateAPIView):
     serializer_class = PostSerializer
-
-    def get_queryset(self):
-        user = self.request.user
-
-        if isinstance(user, AnonymousUser):
-            return Post.objects.filter(visibility='PU')
-        else:
-            return Post.objects.filter(Q(visibility='PU') | Q(user=user))
-
 
 class PostsByUserView(generics.ListCreateAPIView):
     serializer_class = PostSerializer
@@ -47,17 +38,8 @@ class PostsByUserView(generics.ListCreateAPIView):
         return posts.filter(visibility = 'PU')
 
 
-class PostView(generics.RetrieveUpdateDestroyAPIView):
+class PostView(generics.RetrieveUpdateDestroyAPIView, PostAuthenticationMixin):
     serializer_class = PostSerializer
-
-    def get_queryset(self):
-        user = self.request.user
-
-        if isinstance(user, AnonymousUser):
-            return Post.objects.filter(visibility='PU')
-        else:
-            return Post.objects.filter(Q(visibility='PU') | Q(user=user))
-
 
 class SessionView(APIView):
     permission_classes = (permissions.AllowAny,)
